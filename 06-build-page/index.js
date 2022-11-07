@@ -12,13 +12,13 @@ const templateFilePath = path.join(__dirname, "template.html");
 async function deepCopyFolder (srcPath, destPath) {
     await fsPromises.mkdir(destPath, { recursive: true });
 
-    files = await fsPromises.readdir(srcPath, { withFileTypes: true });
+    let files = await fsPromises.readdir(srcPath, { withFileTypes: true });
 
     for (let file of files) {
       if (file.isFile()) {
         await fsPromises.copyFile(path.join(srcPath, file.name), path.join(destPath, file.name));
       } else {
-        deepCopyFolder(path.join(srcPath, file.name), path.join(destPath, file.name));
+        await deepCopyFolder(path.join(srcPath, file.name), path.join(destPath, file.name));
       }
     }
 }
